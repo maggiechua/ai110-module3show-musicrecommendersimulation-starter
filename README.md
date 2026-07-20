@@ -22,10 +22,33 @@ Explain your design in plain language.
 Some prompts to answer:
 
 - What features does each `Song` use in your system
-  - For example: genre, mood, energy, tempo
+
+In the system, each Song has a genre, mood, energy, valence, danceability, acousticness, and tempo. These features were selected as they provide a picture of what a user's taste is, with new songs evaluated against what a user typically likes. All features will be used within the simulation, but features such as genre, mood, energy, and tempo will be given more weight, as they are less prone to subjectivity in comparison to danceability and valence.  
+
 - What information does your `UserProfile` store
+
+The UserProfile stores the following attributes: favorite_genre, favorite_mood, target_energy, and likes_acoustic. In addition to these attributes, I decided to add mutable attributes that update with user interaction, such as favorite_songs, playlists, favorite_artists. 
+
 - How does your `Recommender` compute a score for each song
+
+Real world recommendations system utilize a hybrid approach combining collaborative and content-based filtering. Collaborative filtering takes demographic data that matches a given user profile (i.e. you and several thousand users all like the same three songs), utilizing similar behavioral patterns to extrapolate what a user will like. Content-based filtering relies on attributes to extrapolate taste, such as recommending songs within a similar genre or tempo. This approach ensures that new media that is released onto the platform is not unfairly penalized. 
+
+Using these system as inspiration, my Recommender computes a score for each song between 0 and 1, where the value is a representation of its distance to the user's target energy level. At the start, it is preset, but eventually, it is determined by the average energy level across a user's favorite songs. 
+
+The weights for each feature are listed below:
+- genre: 0.15
+- mood: 0.15
+- energy: 0.35
+- valence: 0.05
+- danceability: 0.05
+- acousticness: 0.05
+- tempo_bpm: 0.10
+
 - How do you choose which songs to recommend
+
+Songs are recommended based on how they compare to a user's taste profile, which includes their favorite mood, genre, and preferred energy level. These values are adjusted through user interactions such as new liked songs, songs that are skipped, etc. as a user's taste may evolve over time. 
+
+Among all available song options, they will be ranked by their similarity to the user's taste, determining the order (descending order, from most to least similar) they are recommended to the user. 
 
 You can include a simple diagram or bullet list if helpful.
 

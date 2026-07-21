@@ -36,12 +36,12 @@ Real world recommendations system utilize a hybrid approach combining collaborat
 Using these system as inspiration, my Recommender computes a score for each song between 0 and 1, where the value is a representation of its distance to the user's target energy level. At the start, it is preset, but eventually, it is determined by the average energy level across a user's favorite songs. 
 
 The weights for each feature are listed below:
-- genre: 0.15
-- mood: 0.15
-- energy: 0.35
-- valence: 0.05
+- genre: 0.10
+- mood: 0.10
+- energy: 0.30
+- valence: 0.20
 - danceability: 0.05
-- acousticness: 0.05
+- acousticness: 0.15
 - tempo_bpm: 0.10
 
 - How do you choose which songs to recommend
@@ -50,7 +50,20 @@ Songs are recommended based on how they compare to a user's taste profile, which
 
 Among all available song options, they will be ranked by their similarity to the user's taste, determining the order (descending order, from most to least similar) they are recommended to the user. 
 
-You can include a simple diagram or bullet list if helpful.
+- Algorithm Recipe
+The finalized algorithm recipe will add points to a song based on the following:
+- +2 points for genre match
+- +2 points for mood match
+- +0-4 points for similarity match
+
+Genre and mood are categorical variables, so labels will be grouped into umbrella categories, to prevent rigidness in the recommendations. Similarity Points are based on distance from a user's ideal energy level:
+- < 0.2: +4 points
+- < 0.4 & >= 0.2: +3 points
+- < 0.6 & >= 0.4: +2 points
+- < 0.8 & >= 0.6: +1 point
+- if >= 0.8: +0 points
+
+The algorithm recipe places greater emphasis on energy match over other features, which aligns with the weighting hierarchy. However, this may limit taste exploration as songs with similar tempos are recommended more often, flattening the diversity in music taste a user may have. The genre and the mood match were set to equivalent weights, so there is no bias in either direction. However, depending on the user, they might prefer genre/mood bias in their recommendations, causing the system to not be as effective. 
 
 ---
 

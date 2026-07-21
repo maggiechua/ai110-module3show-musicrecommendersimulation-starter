@@ -16,12 +16,14 @@ MOOD_UMBRELLAS: Dict[str, List[str]] = {
 }
 
 def _invert_umbrellas(umbrella_map: Dict[str, List[str]]) -> Dict[str, str]:
+    """Flips an umbrella-to-labels map into a label-to-umbrella lookup."""
     return {label: umbrella for umbrella, labels in umbrella_map.items() for label in labels}
 
 _GENRE_LABEL_TO_UMBRELLA = _invert_umbrellas(GENRE_UMBRELLAS)
 _MOOD_LABEL_TO_UMBRELLA = _invert_umbrellas(MOOD_UMBRELLAS)
 
 def _normalize_label(label: Optional[str]) -> str:
+    """Lowercases and strips a genre/mood label for case-insensitive comparison."""
     return (label or "").strip().lower()
 
 def _category_match_points(
@@ -31,6 +33,7 @@ def _category_match_points(
     points: int,
     field_name: str,
 ) -> Tuple[int, str]:
+    """Scores an exact or umbrella-level match between a user preference and a song's label."""
     user_norm = _normalize_label(user_label)
     song_norm = _normalize_label(song_label)
 
@@ -51,6 +54,7 @@ def _category_match_points(
     return 0, f"No {field_name} match: '{song_label}' vs '{user_label}' ({field_name} +0)"
 
 def _energy_similarity_points(target_energy: float, song_energy: float) -> Tuple[int, str]:
+    """Awards 0-4 points based on how close a song's energy is to the user's target energy."""
     diff = abs(song_energy - target_energy)
     if diff < 0.2:
         pts = 4

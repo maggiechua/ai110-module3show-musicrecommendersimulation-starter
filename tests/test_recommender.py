@@ -113,3 +113,7 @@ def test_explain_recommendation_returns_non_empty_string():
     explanation = rec.explain_recommendation(user, song)
     assert isinstance(explanation, str)
     assert explanation.strip() != ""
+
+make_small_recommender()
+test_recommend_returns_songs_sorted_by_score()
+test_explain_recommendation_returns_non_empty_string()

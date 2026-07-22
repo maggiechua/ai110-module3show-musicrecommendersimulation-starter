@@ -11,6 +11,9 @@ You will implement the functions in recommender.py:
 import os
 from recommender import load_songs, recommend_songs
 
+USER_PREF_HIGH_ENERGY_POP = {"genre": "pop", "mood": "happy", "energy": 0.9}
+USER_PREF_CHILL_LOFI = {"genre": "lofi", "mood": "chill", "energy": 0.35}
+USER_PREF_DEEP_INTENSE_ROCK = {"genre": "rock", "mood": "intense", "energy": 0.75}
 
 def print_recommendations(user_prefs: dict, recommendations: list) -> None:
     width = 60
@@ -35,7 +38,7 @@ def main() -> None:
     songs = load_songs(csv_path)
     print(f"Loaded {len(songs)} songs.")
     # Starter example profile
-    user_prefs = {"genre": "pop", "mood": "happy", "energy": 0.8}
+    user_prefs = USER_PREF_DEEP_INTENSE_ROCK
 
     recommendations = recommend_songs(user_prefs, songs, k=5)
     print_recommendations(user_prefs, recommendations)
